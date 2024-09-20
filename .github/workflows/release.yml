@@ -1,21 +1,9 @@
 name: release
 on:
-  workflow_dispatch:
-    inputs:
-      wkhtmltopdf_ref:
-        description: 'Branch/Tag to use from the wkhtmltopdf/wkhtmltopdf repository'
-        required: true
-      packaging_release:
-        description: 'Release to create in wkhtmltopdf/packaging repository'
-        required: true
-      packaging_iteration:
-        description: 'Iteration (useful for tagged releases)'
-        default: '1'
-        required: true
-
+  workflow_dispatch
 jobs:
   docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         package_target:
@@ -37,15 +25,12 @@ jobs:
           repository: wkhtmltopdf/wkhtmltopdf
           path: wkhtmltopdf
           submodules: true
-          ref: ${{ github.event.inputs.wkhtmltopdf_ref }}
+          ref: 0.12.6.x
       - name: build
-        run: cd packaging && python3 ./build package-docker --clean --iteration ${{ github.event.inputs.packaging_iteration }} ${{ matrix.package_target }} ../wkhtmltopdf
-      - uses: softprops/action-gh-release@v0.1.14
+        run: cd packaging && python3 ./build package-docker --clean ${{ matrix.package_target }} ../wkhtmltopdf
+      - uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.event.inputs.packaging_release }}
-          tag_name: ${{ github.event.inputs.packaging_release }}-${{ github.event.inputs.packaging_iteration }}
-          target_commitish: ${{ github.sha }}
           files: "packaging/targets/wkhtmltox*.*"
           fail_on_unmatched_files: false
           draft: true
-          body: All packages were built and uploaded automatically as a part of [this run](${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}), using this [wkhtmltopdf branch/tag](https://github.com/wkhtmltopdf/wkhtmltopdf/tree/${{ github.event.inputs.wkhtmltopdf_ref }}).
+          body: Builds of wkhtmltopdf (0.12.6.x branch) for debian and ubuntu (amd64). [build run](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})
