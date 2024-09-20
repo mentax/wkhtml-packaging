@@ -3,12 +3,11 @@ on:
   workflow_dispatch
 jobs:
   docker:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         package_target:
-          - bookworm-amd64
-          - jammy-amd64
+          - noble-amd64
       fail-fast: false
     steps:
       - name: configure docker
@@ -30,7 +29,9 @@ jobs:
         run: cd packaging && python3 ./build package-docker --clean ${{ matrix.package_target }} ../wkhtmltopdf
       - uses: softprops/action-gh-release@v2
         with:
-          files: "packaging/targets/wkhtmltox*.*"
+          name: wkhtmltopdf 0.12.6.1
+          tag: v0.12.6.1
+          files: "packaging/targets/*"
           fail_on_unmatched_files: false
           draft: true
           body: Builds of wkhtmltopdf (0.12.6.x branch) for debian and ubuntu (amd64). [build run](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})
