@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         package_target:
-          - jammy-amd64
+          - noble-amd64
       fail-fast: false
     steps:
       - name: configure docker
