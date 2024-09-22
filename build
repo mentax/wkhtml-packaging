@@ -237,7 +237,7 @@ def package_docker(config, target, src_dir, iteration, clean=False, debug=False)
             )
         )
         shell(
-            "cp targets/%s/app/bin/wkhtmltopdf targets/wkhtmlpdf_%s-%s"
+            "cp targets/%s/app/bin/wkhtmltopdf targets/wkhtmltopdf_%s-%s"
             % (
                 target,
                 pkg_ver,
