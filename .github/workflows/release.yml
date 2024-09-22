@@ -30,7 +30,7 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           name: wkhtmltopdf 0.12.6.1
-          tag: v0.12.6.1
+          tag_name: v0.12.6.1
           files: "packaging/targets/*"
           fail_on_unmatched_files: false
           draft: true
