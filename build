@@ -232,6 +232,24 @@ def package_docker(config, target, src_dir, iteration, clean=False, debug=False)
             "docker run --rm -v%s:/tgt -w/tgt %s %s"
             % (os.path.abspath("targets"), fpm_args, fdeb)
         )
+        shell(
+            "mv targets/wkhtmltox_%s-%s.%s.deb targets/wkhtmltox_%s-%s.deb"
+            % (
+                pkg_ver,
+                pkg_iter,
+                target.replace("-", "_"),
+                pkg_ver,
+                target.replace("-", "_"),
+            )
+        )
+        shell(
+            "cp targets/%s/app/bin/wkhtmltopdf targets/wkhtmlpdf_%s-%s"
+            % (
+                target,
+                pkg_ver,
+                target.replace("-", "_"),
+            )
+        )
     elif output in ("rpm", "rpm:bzip2"):
         frpm = "-t rpm --rpm-compression %s --rpm-digest sha256" % (
             "xz" if output == "rpm" else "bzip2"
