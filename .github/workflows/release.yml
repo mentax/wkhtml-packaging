@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
         package_target:
+          - trixie-amd64
           - bookworm-amd64
           - bullseye-amd64
           - noble-amd64
